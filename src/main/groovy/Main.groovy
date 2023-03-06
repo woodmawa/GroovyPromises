@@ -1,12 +1,14 @@
-import com.softwood.GroovyPromise
+
 import com.softwood.Promise
+
+import static com.softwood.GroovyPromise.*
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-import static grails.async.Promises.*
+//import static grails.async.Promises.*
 
 Future<String> async() throws InterruptedException {
   CompletableFuture<String> completableFuture = new CompletableFuture<>()
@@ -48,8 +50,7 @@ static void main(String[] args) {
   //CompletableFuture f = CompletableFuture.supplyAsync  {"groovy hello"}
   //println f.get()
 
-  Promise p = new GroovyPromise()
-  p.task {"groovy hello"}.then {it + "more text" }
+  Promise p = task {"groovy hello"}.then {it + " more text" }
 
   println p.get()
 }

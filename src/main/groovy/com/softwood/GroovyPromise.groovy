@@ -3,17 +3,18 @@ package com.softwood
 import java.util.concurrent.CompletableFuture
 
 class GroovyPromise implements Promise {
-    CompletableFuture future
+    CompletableFuture future //concrete class
 
-    @Override
-    Promise task(Closure closure) {
-        future = CompletableFuture.supplyAsync (closure)
-        return this
+    static Promise task(Closure closure) {
+        Promise p = new GroovyPromise()
+        p.future = CompletableFuture.supplyAsync (closure)
+        return p
     }
 
     @Override
     Promise then(Closure closure) {
-        return future.thenApply (closure)
+        future = future.thenApply (closure)
+        return this
     }
 
     @Override
