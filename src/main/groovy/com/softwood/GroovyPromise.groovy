@@ -25,7 +25,12 @@ class GroovyPromise implements Promise {
 
     @Override
     Object get(long timeout, TimeUnit unit) {
-        future.get(timeout, unit )
+        future.get(timeout, unit)
+    }
+
+    @Override
+    Object get(valueIfAbsent) {
+        future.getNow(valueIfAbsent)
     }
 
     @Override
