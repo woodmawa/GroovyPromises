@@ -8,8 +8,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-//import static grails.async.Promises.*
-
 Future<String> async() throws InterruptedException {
   CompletableFuture<String> completableFuture = new CompletableFuture<>()
 

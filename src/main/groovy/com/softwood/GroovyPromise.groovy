@@ -1,6 +1,7 @@
 package com.softwood
 
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
 
 class GroovyPromise implements Promise {
     CompletableFuture future //concrete class
@@ -20,5 +21,15 @@ class GroovyPromise implements Promise {
     @Override
     Object get() {
         future.get()
+    }
+
+    @Override
+    Object get(long timeout, TimeUnit unit) {
+        future.get(timeout, unit )
+    }
+
+    @Override
+    Object leftShift(Closure closure) {
+        task (closure)
     }
 }
