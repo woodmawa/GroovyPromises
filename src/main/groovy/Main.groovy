@@ -2,6 +2,8 @@ import com.softwood.GroovyPromiseList
 import com.softwood.Promise
 import com.softwood.PromiseList
 
+import java.nio.channels.ScatteringByteChannel
+
 import static com.softwood.GroovyPromise.*
 import static com.softwood.GroovyPromiseList.*
 
@@ -27,6 +29,7 @@ Future<String> async() throws InterruptedException {
 }
 
 static void main(String[] args) {
+
   println "Hello world!"
 
   //Promise p = task {2*2}
@@ -50,27 +53,29 @@ static void main(String[] args) {
   //CompletableFuture f = CompletableFuture.supplyAsync  {"groovy hello"}
   //println f.get()
 
-  Promise p = task {"groovy hello"}.then {it + " more text" }
-  p.onComplete {value -> println "promise all done saw : $value"}
+  Promise p = task { "groovy hello" }.then { it + " more text" }
+  p.onComplete { value -> println "promise all done saw : $value" }
 
   println p.get()
   assert p.isDone()
 
   //put some promises into promise list
   PromiseList pl = new GroovyPromiseList()
-  pl << {2*2}
-  pl << {2*4}
-  pl << {2*5}
+  pl << { 2 * 2 }
+  pl << { 2 * 4 }
+  pl << { 2 * 5 }
 
-  onAnyComplete(pl.get()) {println "\t>static onAny $it"}
+  onAnyComplete(pl.get()) { println "\t>static onAny $it" }
 
-  pl.onAnyComplete {results ->
-    println "\t>any results method : $results" }
+  pl.onAnyComplete { results ->
+    println "\t>any results method : $results"
+  }
 
-  pl.onComplete {List results ->
-    println "promiseList results method : $results" }
+  pl.onComplete { List results ->
+    println "promiseList results method : $results"
+  }
 
-  onComplete(pl.get()) {println "static promiseList results $it"}
+  onComplete(pl.get()) { println "static promiseList results $it" }
 
   //println pl.get()
 
