@@ -33,7 +33,15 @@ class GroovyPromiseMap implements PromiseMap {
     @Override
     Promise get(String key) {
         futureMap.get (key)
+
     }
+
+    //why is demanding to implemented
+    @Override
+    Object get(Object key) {
+        return null
+    }
+
 
     @Override
     def onComplete(Closure outcomeMapProcessor ) {

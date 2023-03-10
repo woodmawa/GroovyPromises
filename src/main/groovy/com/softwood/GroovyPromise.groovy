@@ -27,6 +27,13 @@ class GroovyPromise implements Promise {
     }
 
     @Override
+    Promise assign (Closure closure) {
+        future = future.completeAsync (closure)
+        return this
+    }
+
+
+    @Override
     Object get() {
         future.get()
     }
