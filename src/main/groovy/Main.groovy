@@ -1,3 +1,4 @@
+import com.softwood.GroovyPromise
 import com.softwood.GroovyPromiseList
 import com.softwood.Promise
 import com.softwood.PromiseList
@@ -76,6 +77,9 @@ static void main(String[] args) {
   }
 
   onComplete(pl.get()) { println "static promiseList results $it" }
+
+  Promise p1 = new GroovyPromise().assign {10*10}
+  println "test assign " + p1.get()
 
   //println pl.get()
 

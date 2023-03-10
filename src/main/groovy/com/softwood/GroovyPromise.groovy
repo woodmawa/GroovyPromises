@@ -27,8 +27,12 @@ class GroovyPromise implements Promise {
     }
 
     @Override
-    Promise assign (Closure closure) {
-        future = future.completeAsync (closure)
+    Promise assign (Closure answer) {
+        assert answer
+        if (!future)
+            future = new CompletableFuture().completeAsync (answer)
+        else
+            throw new ReadOnlyPropertyException("Promise has already been assigned, create a new promise", GroovyPromise)
         return this
     }
 
