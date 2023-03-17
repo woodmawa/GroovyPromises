@@ -4,7 +4,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.TimeUnit
 
-class GroovyPromise implements Promise {
+class GroovyPromise<T> implements Promise {
     CompletableFuture future //concrete class
 
     static Promise task(Closure closure) {
@@ -38,22 +38,22 @@ class GroovyPromise implements Promise {
 
 
     @Override
-    Object get() {
+    T get() {
         future.get()
     }
 
     @Override
-    Object get(long timeout, TimeUnit unit) {
+    T get(long timeout, TimeUnit unit) {
         future.get(timeout, unit)
     }
 
     @Override
-    Object get(valueIfAbsent) {
+    T get(valueIfAbsent) {
         future.getNow(valueIfAbsent)
     }
 
     @Override
-    Object leftShift(Closure closure) {
+    GroovyPromise leftShift(Closure closure) {
         task (closure)
     }
 
@@ -77,15 +77,16 @@ class GroovyPromise implements Promise {
         // action (result, exception)
         def result
         //expects bifunction so provide wrapper to get the value , and just pass that to users action
-        (future as CompletionStage).whenComplete (result = {value, ex-> action (value)})
+        //exception should be null in this case, so ignore it
+        (future as CompletionStage).whenComplete (result = {value, exc -> action (value)})
         return result
     }
 
     @Override
     def onError(Closure action) {
-        // action (result, exception)
+        //expects bifunction so provide wrapper to get the value , and just pass that to users action
         def result
-        (future as CompletionStage).whenComplete (result = action)
+        (future as CompletionStage).whenComplete (result = {value, exc -> action (value, exc)})
         return result
 
     }
