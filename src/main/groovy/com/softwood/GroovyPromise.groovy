@@ -30,7 +30,7 @@ class GroovyPromise<T> implements Promise {
     Promise assign (Closure answer) {
         assert answer
         if (!future)
-            future = new CompletableFuture().completeAsync (answer)
+            future = new CompletableFuture().supplyAsync (answer)
         else
             throw new ReadOnlyPropertyException("Promise has already been assigned, create a new promise", GroovyPromise)
         return this
