@@ -1,17 +1,12 @@
 import com.softwood.GroovyPromise
-import com.softwood.GroovyPromiseList
 import com.softwood.Promise
-import com.softwood.PromiseList
-
-import java.nio.channels.ScatteringByteChannel
-
-import static com.softwood.GroovyPromise.*
-import static com.softwood.GroovyPromiseList.*
 
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+
+import static grails.async.Promises.*
 
 Future<String> async() throws InterruptedException {
   CompletableFuture<String> completableFuture = new CompletableFuture<>()
@@ -30,7 +25,6 @@ Future<String> async() throws InterruptedException {
 }
 
 static void main(String[] args) {
-
   println "Hello world!"
 
   //Promise p = task {2*2}
@@ -54,34 +48,8 @@ static void main(String[] args) {
   //CompletableFuture f = CompletableFuture.supplyAsync  {"groovy hello"}
   //println f.get()
 
-  Promise p = task { "groovy hello" }.then { it + " more text" }
-  p.onComplete { value -> println "promise all done saw : $value" }
+  Promise p = new GroovyPromise()
+  p.task {"groovy hello"}.then {it + "more text" }
 
   println p.get()
-  assert p.isDone()
-
-  //put some promises into promise list
-  PromiseList pl = new GroovyPromiseList()
-  pl << { 2 * 2 }
-  pl << { 2 * 4 }
-  pl << { 2 * 5 }
-
-  onAnyComplete(pl.get()) { println "\t>static onAny $it" }
-
-  pl.onAnyComplete { results ->
-    println "\t>any results method : $results"
-  }
-
-  pl.onComplete { List results ->
-    println "promiseList results method : $results"
-  }
-
-  onComplete(pl.get()) { println "static promiseList results $it" }
-
-  Promise p1 = new GroovyPromise().assign {10*10}
-  println "test assign " + p1.get()
-
-  //println pl.get()
-
-//sleep 200
 }
