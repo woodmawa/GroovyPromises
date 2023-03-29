@@ -4,7 +4,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
 
 class GroovyPromiseMap implements PromiseMap {
-    Map<String, Promise> futureMap = new ConcurrentHashMap<>()
+    Map<String, PromiseUnresolved> futureMap = new ConcurrentHashMap<>()
 
     /*static Promise task(Closure closure) {
         Promise p = new GroovyPromiseList()
@@ -31,7 +31,7 @@ class GroovyPromiseMap implements PromiseMap {
     }
 
     //@Override
-    Promise get(String key) {
+    PromiseUnresolved get(String key) {
         futureMap.get (key)
 
     }
@@ -79,7 +79,7 @@ class GroovyPromiseMap implements PromiseMap {
 
     }*/
 
-    static onAnyComplete (Map<String, Promise> promisesMap, Closure outcomeProcessor) {
+    static onAnyComplete (Map<String, PromiseUnresolved> promisesMap, Closure outcomeProcessor) {
         // action (result, exception)
         def result
         List<CompletableFuture> futures = promisesMap.collect {GroovyPromise p -> p.future}
@@ -92,7 +92,7 @@ class GroovyPromiseMap implements PromiseMap {
 
     }
 
-    static onComplete (Map<String, Promise> promisesMap, Closure outcomeListProcessor ) {
+    static onComplete (Map<String, PromiseUnresolved> promisesMap, Closure outcomeListProcessor ) {
         // action (result, exception)
         def result
         List<CompletableFuture> futures = promisesMap.collect {GroovyPromise p -> p.future}

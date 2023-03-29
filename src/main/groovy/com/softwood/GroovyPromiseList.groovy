@@ -1,12 +1,10 @@
 package com.softwood
 
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.CompletionStage
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.TimeUnit
 
 class GroovyPromiseList implements PromiseList {
-    Collection<Promise> futureList = new ConcurrentLinkedQueue()
+    Collection<PromiseUnresolved> futureList = new ConcurrentLinkedQueue()
 
     /*static Promise task(Closure closure) {
         Promise p = new GroovyPromiseList()
@@ -73,7 +71,7 @@ class GroovyPromiseList implements PromiseList {
 
     }*/
 
-    static onAnyComplete (List<Promise> promises, Closure outcomeProcessor) {
+    static onAnyComplete (List<PromiseUnresolved> promises, Closure outcomeProcessor) {
         // action (result, exception)
         def result
         List<CompletableFuture> futures = promises.collect {GroovyPromise p -> p.future}
@@ -88,7 +86,7 @@ class GroovyPromiseList implements PromiseList {
 
     //onError (Closure action)
 
-    static onComplete (List<Promise> promises, Closure outcomeListProcessor ) {
+    static onComplete (List<PromiseUnresolved> promises, Closure outcomeListProcessor ) {
         // action (result, exception)
         def result
         List<CompletableFuture> futures = promises.collect {GroovyPromise p -> p.future}
